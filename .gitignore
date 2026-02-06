@@ -29,4 +29,7 @@ dist-ssr
 # Agent/Development internal files
 .agent/
 docs/PROPOSED_RULES_JA.md
+docs/ANTIGRAVITY_GUIDE_JA.md
+docs/RELEASE_GUIDE_JA.md
+docs/GIT_GUIDE_JA.md
 RELEASE_NOTES_*.md
