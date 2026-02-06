@@ -63,14 +63,52 @@ gh repo create promptvault --public --source=. --remote=origin --push
 特定のバージョンを「タグ」として記録しておくと、後からその時点のコードに戻りやすくなります。
 
 ```powershell
-# 1. ローカルでタグを作成
-git tag v1.5.0
+# 1. ローカルでタグを作成（アノテーション付き推奨）
+git tag -a v1.6.0 -m "v1.6.0: Context menu, unconfigured filter, blank line settings"
 
 # 2. タグを GitHub に送信
-git push origin v1.5.0
+git push origin v1.6.0
 ```
 
+### GitHub Releases でリリースを公開する
+
+#### 方法A: GitHub CLI を使う（推奨）
+
+```powershell
+# 1. distフォルダをZIP化
+Compress-Archive -Path dist\* -DestinationPath PromptVault-v1.6.0.zip -Force
+
+# 2. リリースを作成（ZIPファイル添付付き）
+gh release create v1.6.0 `
+  --title "v1.6.0: Context Menu & Quick Guide" `
+  --notes-file RELEASE_NOTES_v1.6.0.md `
+  PromptVault-v1.6.0.zip
+```
+
+#### 方法B: ブラウザで手動作成
+
+1. **GitHub Releasesページを開く**: https://github.com/TK2F/promptvault/releases/new
+2. **タグを選択**: ドロップダウンから `v1.6.0` を選択
+3. **タイトル入力**: `v1.6.0: Context Menu & Quick Guide`
+4. **説明入力**: `RELEASE_NOTES_v1.6.0.md` の内容をコピー&ペースト
+5. **ファイルをアップロード**: `PromptVault-v1.6.0.zip` をドラッグ&ドロップ
+6. **「Publish release」をクリック**
+
+### リリースノートの書き方（日英バイリンガル推奨）
+
+```markdown
+## 🇺🇸 What's New in v1.6.0
+
+### ✨ New Features
+- **Feature Name**: Description
+
 ---
+
+## 🇯🇵 v1.6.0 の新機能
+
+### ✨ 新機能
+- **機能名**: 説明
+```
 
 ## 4. 「こんな時はどうする？」Q&A
 
