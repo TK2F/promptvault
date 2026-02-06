@@ -14,6 +14,7 @@ interface PromptStore {
     searchQuery: string;
     filterTags: string[];
     filterCategories: string[];
+    showUnconfigured: boolean;
     isLoading: boolean;
     isReadOnly: boolean;
     selectedPromptId: string | null;
@@ -63,6 +64,7 @@ interface PromptStore {
     removeCategoryFilter: (category: string) => void;
     clearFilters: () => void;
     hasActiveFilters: () => boolean;
+    toggleShowUnconfigured: () => void;
     allCategories: () => string[];
     allTags: () => string[];
 }
@@ -78,6 +80,7 @@ export const usePromptStore = create<PromptStore>((set, get) => ({
     searchQuery: '',
     filterTags: [],
     filterCategories: [],
+    showUnconfigured: false,
     isLoading: true,
     isReadOnly: false,
     selectedPromptId: null,
@@ -86,7 +89,7 @@ export const usePromptStore = create<PromptStore>((set, get) => ({
 
     // Computed - ピン留めを除く、更新日順
     filteredPrompts: () => {
-        const { prompts, searchQuery, settings, pinnedPromptIds, filterTags, filterCategories } = get();
+        const { prompts, searchQuery, settings, pinnedPromptIds, filterTags, filterCategories, showUnconfigured } = get();
         let filtered = searchPrompts(prompts, searchQuery, settings.caseSensitiveSearch);
 
         // タグフィルター適用
@@ -100,6 +103,13 @@ export const usePromptStore = create<PromptStore>((set, get) => ({
         if (filterCategories.length > 0) {
             filtered = filtered.filter((p) =>
                 p.category && filterCategories.includes(p.category)
+            );
+        }
+
+        // 未設定フィルター適用
+        if (showUnconfigured) {
+            filtered = filtered.filter((p) =>
+                !p.category && (!p.tags || p.tags.length === 0)
             );
         }
 
@@ -439,12 +449,17 @@ export const usePromptStore = create<PromptStore>((set, get) => ({
     },
 
     clearFilters: () => {
-        set({ filterTags: [], filterCategories: [], searchQuery: '' });
+        set({ filterTags: [], filterCategories: [], searchQuery: '', showUnconfigured: false });
     },
 
     hasActiveFilters: () => {
-        const { filterTags, filterCategories, searchQuery } = get();
-        return filterTags.length > 0 || filterCategories.length > 0 || searchQuery !== '';
+        const { filterTags, filterCategories, searchQuery, showUnconfigured } = get();
+        return filterTags.length > 0 || filterCategories.length > 0 || searchQuery !== '' || showUnconfigured;
+    },
+
+    toggleShowUnconfigured: () => {
+        const { showUnconfigured } = get();
+        set({ showUnconfigured: !showUnconfigured });
     },
 
     allCategories: () => {

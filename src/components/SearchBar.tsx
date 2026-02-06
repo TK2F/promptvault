@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Search, X, CaseSensitive, Tag, FolderOpen } from "lucide-react";
+import { Search, X, CaseSensitive, Tag, FolderOpen, CircleDashed } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { usePromptStore } from "@/stores/promptStore";
@@ -18,6 +18,8 @@ export function SearchBar() {
         removeCategoryFilter,
         clearFilters,
         hasActiveFilters,
+        showUnconfigured,
+        toggleShowUnconfigured,
     } = usePromptStore();
     const inputRef = React.useRef<HTMLInputElement>(null);
 
@@ -110,11 +112,41 @@ export function SearchBar() {
                         `} />
                     </span>
                 </button>
+
+                {/* Unconfigured Filter Toggle */}
+                <button
+                    onClick={toggleShowUnconfigured}
+                    className={`
+                        relative flex items-center gap-1.5 px-2.5 py-1.5 rounded-full text-xs font-medium
+                        transition-all duration-200 ease-out
+                        ${showUnconfigured
+                            ? "bg-gradient-to-r from-amber-500 to-amber-400 text-white shadow-md shadow-amber-500/25"
+                            : "bg-muted hover:bg-muted/80 text-muted-foreground hover:text-foreground"
+                        }
+                    `}
+                    title={t.showUnconfigured}
+                >
+                    <CircleDashed className="h-3.5 w-3.5" />
+                </button>
             </div>
 
             {/* Active Filters */}
-            {(filterTags.length > 0 || filterCategories.length > 0) && (
+            {(filterTags.length > 0 || filterCategories.length > 0 || showUnconfigured) && (
                 <div className="flex flex-wrap items-center gap-1.5">
+                    {/* Unconfigured Filter */}
+                    {showUnconfigured && (
+                        <button
+                            onClick={toggleShowUnconfigured}
+                            className="inline-flex items-center gap-1 px-2 py-0.5 text-xs rounded-full
+                                bg-amber-500/20 text-amber-700 dark:text-amber-300
+                                hover:bg-amber-500/30 transition-colors group"
+                        >
+                            <CircleDashed className="h-3 w-3" />
+                            <span>{t.unconfigured}</span>
+                            <X className="h-3 w-3 opacity-50 group-hover:opacity-100" />
+                        </button>
+                    )}
+
                     {/* Category Filters */}
                     {filterCategories.map((category) => (
                         <button

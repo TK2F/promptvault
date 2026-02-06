@@ -23,6 +23,7 @@ export interface Settings {
     fontSize: 'small' | 'medium' | 'large';
     language: 'ja' | 'en';
     caseSensitiveSearch: boolean;
+    blankLineMode: 'keep-one' | 'remove-all';  // 空行処理モード
 }
 
 /**
@@ -52,6 +53,7 @@ export const DEFAULT_SETTINGS: Settings = {
     fontSize: 'medium',
     language: 'ja',
     caseSensitiveSearch: false,
+    blankLineMode: 'keep-one',
 };
 
 /**

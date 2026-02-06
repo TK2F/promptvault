@@ -315,6 +315,24 @@ export function Settings() {
                             </Tabs>
                         </div>
 
+                        {/* Blank Line Mode (for Quick Add) */}
+                        <div>
+                            <label className="text-sm font-medium mb-2 block">{t.blankLineMode}</label>
+                            <Tabs
+                                value={settings.blankLineMode || 'keep-one'}
+                                onValueChange={(value) => updateSettings({ blankLineMode: value as 'keep-one' | 'remove-all' })}
+                            >
+                                <TabsList className="grid w-full grid-cols-2">
+                                    <TabsTrigger value="keep-one" className="text-xs">
+                                        {t.blankLineModeKeepOne}
+                                    </TabsTrigger>
+                                    <TabsTrigger value="remove-all" className="text-xs">
+                                        {t.blankLineModeRemoveAll}
+                                    </TabsTrigger>
+                                </TabsList>
+                            </Tabs>
+                        </div>
+
                         {/* Storage Info */}
                         <div className="pt-4 border-t">
                             <label className="text-sm font-medium mb-2 block">{t.storageUsage}</label>

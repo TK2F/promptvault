@@ -7,6 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.6.0] - 2026-02-07
+
+### Added
+- **Context Menu Integration** - Right-click on selected text to add prompts
+  - **Quick Add** - Instantly save highlighted text with formatting preserved
+  - Auto-names from first 30 characters of content
+- **Unconfigured Filter** - Filter prompts without category/tags for batch editing
+- **Blank Line Settings** - Choose "Keep blank lines (max 1)" or "Remove all" in settings
+- **Quick Guide** - In-app help popup with usage instructions (Japanese/English)
+- New permissions: `contextMenus`, `activeTab`, `scripting`, `host_permissions`
+
+### Changed
+- Side panel auto-opens when adding from context menu
+- Improved filter badges with "Unconfigured" indicator
+
+### Fixed
+- Text selection now preserves formatting with configurable blank line handling
+
+---
+
 ## [1.5.0] - 2026-02-06
 
 ### Added

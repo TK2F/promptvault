@@ -31,6 +31,8 @@ export interface Translations {
     filterByCategory: string;
     activeFilters: string;
     clearAll: string;
+    showUnconfigured: string;
+    unconfigured: string;
 
     // プロンプト
     promptName: string;
@@ -69,6 +71,11 @@ export interface Translations {
     storageUsage: string;
     promptsCount: string;
     dataManagement: string;
+    blankLineMode: string;
+    blankLineModeKeepOne: string;
+    blankLineModeRemoveAll: string;
+    quickGuide: string;
+    quickGuideTitle: string;
 
     // エクスポート
     export: string;
@@ -91,6 +98,8 @@ export interface Translations {
     confirmDelete: string;
     nameRequired: string;
     contentRequired: string;
+    promptAdded: string;
+    error: string;
 
     // インポート
     import: string;
@@ -136,6 +145,8 @@ const ja: Translations = {
     filterByCategory: 'カテゴリで絞り込み',
     activeFilters: '有効なフィルター',
     clearAll: 'すべてクリア',
+    showUnconfigured: '未設定のみ表示',
+    unconfigured: '未設定',
 
     // プロンプト
     promptName: 'プロンプト名',
@@ -174,6 +185,11 @@ const ja: Translations = {
     storageUsage: 'ストレージ使用量',
     promptsCount: '件のプロンプト',
     dataManagement: 'データ管理',
+    blankLineMode: '空行の処理',
+    blankLineModeKeepOne: '空行を保持（1つまで）',
+    blankLineModeRemoveAll: '空行を削除（コンパクト）',
+    quickGuide: 'クイックガイド',
+    quickGuideTitle: '使い方ガイド',
 
     // エクスポート
     export: 'エクスポート',
@@ -196,6 +212,8 @@ const ja: Translations = {
     confirmDelete: 'を削除しますか？',
     nameRequired: '名前を入力してください',
     contentRequired: '内容を入力してください',
+    promptAdded: 'プロンプトを追加しました',
+    error: 'エラー',
 
     // インポート
     import: 'インポート',
@@ -241,6 +259,8 @@ const en: Translations = {
     filterByCategory: 'Filter by Category',
     activeFilters: 'Active Filters',
     clearAll: 'Clear All',
+    showUnconfigured: 'Show Unconfigured Only',
+    unconfigured: 'Unconfigured',
 
     // Prompts
     promptName: 'Name',
@@ -279,6 +299,11 @@ const en: Translations = {
     storageUsage: 'Storage Usage',
     promptsCount: 'prompts',
     dataManagement: 'Data Management',
+    blankLineMode: 'Blank Line Handling',
+    blankLineModeKeepOne: 'Keep blank lines (max 1)',
+    blankLineModeRemoveAll: 'Remove all (compact)',
+    quickGuide: 'Quick Guide',
+    quickGuideTitle: 'How to Use',
 
     // Export
     export: 'Export',
@@ -301,6 +326,8 @@ const en: Translations = {
     confirmDelete: 'Delete this prompt?',
     nameRequired: 'Name is required',
     contentRequired: 'Content is required',
+    promptAdded: 'Prompt added',
+    error: 'Error',
 
     // Import
     import: 'Import',

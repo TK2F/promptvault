@@ -2,10 +2,16 @@
     "manifest_version": 3,
     "name": "PromptVault",
     "description": "プロンプト管理ツール - 即検索・即再利用・即編集",
-    "version": "1.5.0",
+    "version": "1.6.0",
     "permissions": [
         "storage",
-        "sidePanel"
+        "sidePanel",
+        "contextMenus",
+        "activeTab",
+        "scripting"
+    ],
+    "host_permissions": [
+        "<all_urls>"
     ],
     "side_panel": {
         "default_path": "sidepanel.html"
