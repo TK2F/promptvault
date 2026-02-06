@@ -25,3 +25,8 @@ dist-ssr
 
 # Build artifacts
 *.zip
+
+# Agent/Development internal files
+.agent/
+docs/PROPOSED_RULES_JA.md
+RELEASE_NOTES_*.md
