@@ -74,6 +74,14 @@ export interface Translations {
     blankLineMode: string;
     blankLineModeKeepOne: string;
     blankLineModeRemoveAll: string;
+    sortMode: string;
+    sortModeCustom: string;
+    sortModeUpdatedAtDesc: string;
+    sortModeUpdatedAtAsc: string;
+    sortModeCreatedAtDesc: string;
+    sortModeCreatedAtAsc: string;
+    sortModeNameAsc: string;
+    sortModeNameDesc: string;
     quickGuide: string;
     quickGuideTitle: string;
 
@@ -188,6 +196,14 @@ const ja: Translations = {
     blankLineMode: '空行の処理',
     blankLineModeKeepOne: '空行を保持（1つまで）',
     blankLineModeRemoveAll: '空行を削除（コンパクト）',
+    sortMode: '並び替え順',
+    sortModeCustom: 'カスタム順',
+    sortModeUpdatedAtDesc: '更新日時（新→古）',
+    sortModeUpdatedAtAsc: '更新日時（古→新）',
+    sortModeCreatedAtDesc: '登録日時（新→古）',
+    sortModeCreatedAtAsc: '登録日時（古→新）',
+    sortModeNameAsc: '名前順（A→Z）',
+    sortModeNameDesc: '名前順（Z→A）',
     quickGuide: 'クイックガイド',
     quickGuideTitle: '使い方ガイド',
 
@@ -302,6 +318,14 @@ const en: Translations = {
     blankLineMode: 'Blank Line Handling',
     blankLineModeKeepOne: 'Keep blank lines (max 1)',
     blankLineModeRemoveAll: 'Remove all (compact)',
+    sortMode: 'Sort Order',
+    sortModeCustom: 'Custom',
+    sortModeUpdatedAtDesc: 'Updated (New→Old)',
+    sortModeUpdatedAtAsc: 'Updated (Old→New)',
+    sortModeCreatedAtDesc: 'Created (New→Old)',
+    sortModeCreatedAtAsc: 'Created (Old→New)',
+    sortModeNameAsc: 'Name (A→Z)',
+    sortModeNameDesc: 'Name (Z→A)',
     quickGuide: 'Quick Guide',
     quickGuideTitle: 'How to Use',
 

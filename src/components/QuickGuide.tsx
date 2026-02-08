@@ -32,7 +32,14 @@ const guideContentJa = `
 ### フィルタリング
 - **検索バー**でテキスト検索
 - **タグ/カテゴリ**をクリックでフィルタ
+- **再クリック**でフィルター解除
 - **◯ボタン**で未設定のみ表示
+
+### 並び替え順
+- **↑↓ボタン**（ヘッダー）または**設定**から切替
+- **カスタム順** - ドラッグ&ドロップで設定
+- **更新/登録日時** - 新→古、古→新から選択
+- **名前順** - A→Z、Z→Aから選択
 
 ### データ管理
 - 設定 → エクスポート（JSON/CSV）
@@ -64,7 +71,14 @@ const guideContentEn = `
 ### Filtering
 - **Search bar** for text search
 - Click **tags/categories** to filter
+- **Click again** to remove filter
 - **◯ button** to show unconfigured only
+
+### Sort Order
+- **↑↓ button** (header) or **Settings** to change
+- **Custom** - Set via drag & drop
+- **Updated/Created** - Choose New→Old or Old→New
+- **Name** - Choose A→Z or Z→A
 
 ### Data Management
 - Settings → Export (JSON/CSV)

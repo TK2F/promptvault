@@ -5,6 +5,7 @@ import { PromptDetail } from "@/components/PromptDetail";
 import { ImportDialog } from "@/components/ImportDialog";
 import { Settings } from "@/components/Settings";
 import { QuickGuide } from "@/components/QuickGuide";
+import { SortSelector } from "@/components/SortSelector";
 import { Toaster } from "@/components/ui/toaster";
 import { usePromptStore } from "@/stores/promptStore";
 import { useToast } from "@/hooks/use-toast";
@@ -114,6 +115,7 @@ function App() {
                         <div className="flex-1">
                             <SearchBar />
                         </div>
+                        <SortSelector />
                         <QuickGuide />
                         <Settings />
                     </div>

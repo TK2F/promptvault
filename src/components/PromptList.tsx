@@ -49,15 +49,19 @@ function SortablePromptItem({ prompt, isPinned, isRecent }: SortablePromptItemPr
     };
 
     return (
-        <div ref={setNodeRef} style={style} className="relative group/drag">
+        <div ref={setNodeRef} style={style} className="relative group/drag flex items-stretch">
+            {/* ドラッグハンドル - カードの左側に配置 */}
             <div
-                className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-6 opacity-0 group-hover/drag:opacity-50 hover:!opacity-100 cursor-grab active:cursor-grabbing touch-none"
+                className="flex items-center justify-center w-6 shrink-0 cursor-grab active:cursor-grabbing touch-none opacity-30 hover:opacity-100 transition-opacity rounded-l-md hover:bg-muted/50"
                 {...attributes}
                 {...listeners}
+                title="ドラッグで並び替え"
             >
-                <GripVertical className="h-5 w-5 text-muted-foreground" />
+                <GripVertical className="h-4 w-4 text-muted-foreground" />
             </div>
-            <PromptCard prompt={prompt} isPinned={isPinned} isRecent={isRecent} />
+            <div className="flex-1 min-w-0">
+                <PromptCard prompt={prompt} isPinned={isPinned} isRecent={isRecent} />
+            </div>
         </div>
     );
 }
@@ -190,7 +194,7 @@ export function PromptList() {
         >
             <div
                 ref={listRef}
-                className="flex flex-col gap-2 p-3 pl-8 overflow-y-auto flex-1"
+                className="flex flex-col gap-2 p-3 overflow-y-auto flex-1"
             >
                 {/* ピン留めセクション（ドラッグ不可） */}
                 {showPinned && (

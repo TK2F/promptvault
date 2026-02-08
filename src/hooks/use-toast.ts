@@ -2,13 +2,15 @@ import * as React from "react";
 import type { ToastActionElement, ToastProps } from "@/components/ui/toast";
 
 const TOAST_LIMIT = 1;
-const TOAST_REMOVE_DELAY = 3000;
+const DEFAULT_TOAST_DURATION = 2000; // デフォルト2秒（短い通知向け）
+const TOAST_ANIMATION_DURATION = 300; // アニメーション用の遅延
 
 type ToasterToast = ToastProps & {
     id: string;
     title?: React.ReactNode;
     description?: React.ReactNode;
     action?: ToastActionElement;
+    duration?: number; // 個別のduration設定
 };
 
 type State = {
@@ -50,7 +52,24 @@ type Action =
     };
 
 const toastTimeouts = new Map<string, ReturnType<typeof setTimeout>>();
+const dismissTimeouts = new Map<string, ReturnType<typeof setTimeout>>();
 
+// Toast表示後、指定時間経過で自動dismiss
+const scheduleAutoDismiss = (toastId: string, duration: number) => {
+    // 既存のタイムアウトをクリア
+    if (dismissTimeouts.has(toastId)) {
+        clearTimeout(dismissTimeouts.get(toastId));
+    }
+
+    const timeout = setTimeout(() => {
+        dismissTimeouts.delete(toastId);
+        dispatch({ type: "DISMISS_TOAST", toastId });
+    }, duration);
+
+    dismissTimeouts.set(toastId, timeout);
+};
+
+// Dismiss後のDOM削除用（アニメーション完了後）
 const addToRemoveQueue = (toastId: string) => {
     if (toastTimeouts.has(toastId)) {
         return;
@@ -62,7 +81,7 @@ const addToRemoveQueue = (toastId: string) => {
             type: "REMOVE_TOAST",
             toastId: toastId,
         });
-    }, TOAST_REMOVE_DELAY);
+    }, TOAST_ANIMATION_DURATION);
 
     toastTimeouts.set(toastId, timeout);
 };
@@ -133,8 +152,9 @@ function dispatch(action: Action) {
 
 type Toast = Omit<ToasterToast, "id">;
 
-function toast({ ...props }: Toast) {
+function toast({ duration, ...props }: Toast) {
     const id = genId();
+    const effectiveDuration = duration ?? DEFAULT_TOAST_DURATION;
 
     const update = (props: ToasterToast) =>
         dispatch({
@@ -148,12 +168,16 @@ function toast({ ...props }: Toast) {
         toast: {
             ...props,
             id,
+            duration: effectiveDuration,
             open: true,
             onOpenChange: (open) => {
                 if (!open) dismiss();
             },
         },
     });
+
+    // 自動消去をスケジュール
+    scheduleAutoDismiss(id, effectiveDuration);
 
     return {
         id: id,

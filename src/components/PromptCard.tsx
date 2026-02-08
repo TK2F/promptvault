@@ -21,7 +21,9 @@ export function PromptCard({ prompt, isRecent, isPinned }: PromptCardProps) {
         togglePin,
         settings,
         addTagFilter,
+        removeTagFilter,
         addCategoryFilter,
+        removeCategoryFilter,
         filterTags,
         filterCategories,
     } = usePromptStore();
@@ -69,14 +71,24 @@ export function PromptCard({ prompt, isRecent, isPinned }: PromptCardProps) {
         selectPrompt(prompt.id);
     };
 
+    // タグクリック：トグル動作（選択済みなら解除、未選択なら追加）
     const handleTagClick = (e: React.MouseEvent, tag: string) => {
         e.stopPropagation();
-        addTagFilter(tag);
+        if (filterTags.includes(tag)) {
+            removeTagFilter(tag);
+        } else {
+            addTagFilter(tag);
+        }
     };
 
+    // カテゴリクリック：トグル動作（選択済みなら解除、未選択なら追加）
     const handleCategoryClick = (e: React.MouseEvent, category: string) => {
         e.stopPropagation();
-        addCategoryFilter(category);
+        if (filterCategories.includes(category)) {
+            removeCategoryFilter(category);
+        } else {
+            addCategoryFilter(category);
+        }
     };
 
     return (

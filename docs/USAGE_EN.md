@@ -76,6 +76,42 @@ Drag and drop to reorder:
 
 ---
 
+## Filtering
+
+### Filter by Tag
+
+Click a tag chip on any prompt card to show only prompts with that tag.
+
+- **Green chip**: Tag filter
+- **Click to apply filter**
+- **Click again to remove filter** (v1.6.1)
+
+### Filter by Category
+
+Click a category chip on any prompt card to show only prompts in that category.
+
+- **Blue chip**: Category filter
+- **Click to apply filter**
+- **Click again to remove filter** (v1.6.1)
+
+### Filter from Detail View (v1.6.1)
+
+Clicking a category or tag in detail view will:
+
+1. Apply/remove the filter
+2. Automatically return to list view
+
+### Combined Filters
+
+Combine tag + category + keyword search for precise filtering.
+
+### Clear Filters
+
+- Click the "×" on filter badges below the search bar
+- Or click "Clear All" link
+
+---
+
 ## Settings
 
 Click the gear icon (⚙️) to open settings.
@@ -96,6 +132,20 @@ Click the gear icon (⚙️) to open settings.
 - **Small** - Compact display
 - **Medium** - Standard
 - **Large** - Larger text
+
+### Sort Order (v1.6.1)
+
+Choose how prompts are sorted. Use the ↑↓ button in header or Settings:
+
+| Option | Description |
+|--------|-------------|
+| **Custom** | Order set via drag & drop (default) |
+| **Updated (New→Old)** | Recently updated prompts first |
+| **Updated (Old→New)** | Oldest updated prompts first |
+| **Created (New→Old)** | Recently added prompts first |
+| **Created (Old→New)** | Oldest added prompts first |
+| **Name (A→Z)** | Alphabetical order |
+| **Name (Z→A)** | Reverse alphabetical order |
 
 ---
 

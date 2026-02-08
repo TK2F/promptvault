@@ -7,6 +7,42 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.6.1] - 2026-02-09
+
+### Added
+- **Sort Order Selection (7 modes)** - Choose how prompts are sorted
+  - Custom (drag & drop order)
+  - Updated (New→Old / Old→New)
+  - Created (New→Old / Old→New)
+  - Name (A→Z / Z→A)
+- **Quick Sort Button** - One-click sort order change from header (Excel/Spreadsheet-like UX)
+- **Tag/Category Toggle Filter** - Click again to deselect active filter
+  - Works in both card list and detail view
+  - Clicking in detail view returns to filtered list
+- **Privacy Policy Update** - Added documentation for new permissions (contextMenus, activeTab, scripting)
+
+### Fixed
+- **Toast Notification Timing** - Reduced display duration from 3s to 2s for quicker dismissal
+  - Notifications no longer block the back button after quick operations
+  - Supports custom `duration` parameter for per-toast control
+- **Drag & Drop Reordering** - Fixed prompts not maintaining custom order
+  - Sort order now persists after drag-and-drop
+  - Uses `sortOrder` field properly instead of always sorting by update time
+- **Settings Backward Compatibility** - New settings (like sortMode) are now properly merged with existing user data
+- **Import Functionality** - Now preserves original data from backup files
+  - Keeps isPinned, sortOrder, createdAt, updatedAt when importing
+  - Pinned prompts are correctly restored
+  - ID collision handling: uses original ID when available, otherwise generates new
+  - JSON array import now validates each item properly
+
+### Changed
+- **Drag Handle Position** - Moved from outside card to left edge inside card
+  - Easier to grab in narrow side panel
+  - Visible at 30% opacity, increases on hover
+  - Includes tooltip for discoverability
+
+---
+
 ## [1.6.0] - 2026-02-07
 
 ### Added

@@ -1,6 +1,6 @@
 # Privacy Policy / プライバシーポリシー
 
-**Last Updated: 2026-02-06**
+**Last Updated: 2026-02-09**
 
 ## English
 
@@ -35,6 +35,13 @@ Your data is **NEVER**:
 - Used for advertising
 - Sold or monetized
 
+### Data Security
+
+- All data is stored exclusively in `chrome.storage.local`, which is isolated to this extension
+- Data is encrypted at the browser level by Chrome
+- No external scripts or services have access to your stored data
+- Backups are stored locally for data recovery
+
 ### Data Deletion
 
 To delete all stored data:
@@ -43,12 +50,20 @@ To delete all stored data:
 
 All associated data will be deleted when you remove the extension.
 
+Alternatively, use the "Delete All Data" option in Settings to clear data while keeping the extension installed.
+
 ### Permissions Explained
 
 | Permission | Why We Need It |
 |------------|----------------|
 | `storage` | Save your prompts and settings locally |
 | `sidePanel` | Display the interface in Chrome's side panel |
+| `contextMenus` | Enable right-click menu to add prompts from selected text (v1.6+) |
+| `activeTab` | Read selected text from the current tab for Quick Add feature |
+| `scripting` | Execute the text selection script for Quick Add feature |
+| `host_permissions` | Required for scripting permission to work on all websites |
+
+**Note**: The `activeTab`, `scripting`, and `host_permissions` are only used when you explicitly right-click and select "Add to PromptVault". We do not read any page content automatically or in the background.
 
 ### Contact
 
@@ -89,6 +104,13 @@ PromptVault はサードパーティサービスに**接続しません**。す�
 - 広告に使用されません
 - 販売・収益化されません
 
+### データセキュリティ
+
+- すべてのデータは `chrome.storage.local` に排他的に保存され、この拡張機能に隔離されています
+- データはChromeによりブラウザレベルで暗号化されています
+- 外部スクリプトやサービスが保存データにアクセスすることはできません
+- データ復旧のためのバックアップはローカルに保存されます
+
 ### データの削除
 
 保存されたすべてのデータを削除するには：
@@ -97,12 +119,20 @@ PromptVault はサードパーティサービスに**接続しません**。す�
 
 拡張機能を削除すると、関連するすべてのデータが削除されます。
 
+または、設定内の「全データを削除」オプションを使用して、拡張機能をインストールしたままデータをクリアすることもできます。
+
 ### 権限の説明
 
 | 権限 | 必要な理由 |
-|------|-----------| 
+|------|-----------|
 | `storage` | プロンプトと設定をローカルに保存 |
 | `sidePanel` | Chrome のサイドパネルにインターフェースを表示 |
+| `contextMenus` | 選択テキストからプロンプトを追加する右クリックメニューを有効化（v1.6以降） |
+| `activeTab` | クイック追加機能で現在のタブから選択テキストを読み取る |
+| `scripting` | クイック追加機能でテキスト選択スクリプトを実行 |
+| `host_permissions` | スクリプト権限がすべてのウェブサイトで動作するために必要 |
+
+**注意**: `activeTab`、`scripting`、`host_permissions` は、明示的に右クリックして「PromptVaultに追加」を選択した場合にのみ使用されます。自動的にまたはバックグラウンドでページコンテンツを読み取ることはありません。
 
 ### お問い合わせ
 

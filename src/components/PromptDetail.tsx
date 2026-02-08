@@ -1,7 +1,7 @@
 import * as React from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import { ArrowLeft, Edit2, Copy, Save, X, Pin, PinOff } from "lucide-react";
+import { ArrowLeft, Edit2, Copy, Save, X, Pin, PinOff, FolderOpen, Tag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -24,6 +24,12 @@ export function PromptDetail() {
         hasUnsavedChanges,
         setHasUnsavedChanges,
         settings,
+        addTagFilter,
+        removeTagFilter,
+        addCategoryFilter,
+        removeCategoryFilter,
+        filterTags,
+        filterCategories,
     } = usePromptStore();
 
     const t = getTranslation(settings.language);
@@ -283,17 +289,54 @@ export function PromptDetail() {
                     </div>
                 ) : (
                     <div className="prose prose-sm dark:prose-invert max-w-none">
-                        {/* カテゴリ・タグ表示 */}
-                        <div className="flex flex-wrap gap-1 mb-4">
+                        {/* カテゴリ・タグ表示（クリックでフィルター適用してリストに戻る） */}
+                        <div className="flex flex-wrap gap-1 mb-4 not-prose">
                             {prompt.category && (
-                                <span className="tag bg-secondary">
+                                <button
+                                    onClick={() => {
+                                        if (filterCategories.includes(prompt.category!)) {
+                                            removeCategoryFilter(prompt.category!);
+                                        } else {
+                                            addCategoryFilter(prompt.category!);
+                                        }
+                                        selectPrompt(null);
+                                    }}
+                                    className={`
+                                        inline-flex items-center gap-0.5 px-2 py-1 text-xs rounded-full
+                                        transition-all duration-150 hover:scale-105
+                                        ${filterCategories.includes(prompt.category)
+                                            ? "bg-blue-500 text-white"
+                                            : "bg-blue-500/15 text-blue-700 dark:text-blue-300 hover:bg-blue-500/25"
+                                        }
+                                    `}
+                                >
+                                    <FolderOpen className="h-3 w-3" />
                                     {prompt.category}
-                                </span>
+                                </button>
                             )}
                             {prompt.tags?.map((tag) => (
-                                <span key={tag} className="tag">
+                                <button
+                                    key={tag}
+                                    onClick={() => {
+                                        if (filterTags.includes(tag)) {
+                                            removeTagFilter(tag);
+                                        } else {
+                                            addTagFilter(tag);
+                                        }
+                                        selectPrompt(null);
+                                    }}
+                                    className={`
+                                        inline-flex items-center gap-0.5 px-2 py-1 text-xs rounded-full
+                                        transition-all duration-150 hover:scale-105
+                                        ${filterTags.includes(tag)
+                                            ? "bg-emerald-500 text-white"
+                                            : "bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-500/25"
+                                        }
+                                    `}
+                                >
+                                    <Tag className="h-3 w-3" />
                                     {tag}
-                                </span>
+                                </button>
                             ))}
                         </div>
                         <ReactMarkdown remarkPlugins={[remarkGfm]}>

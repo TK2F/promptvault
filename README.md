@@ -22,6 +22,8 @@ A Chrome extension for ChatGPT / Gemini / Claude users to "instantly search, reu
 | 📌 **Pin Prompts** | Keep frequently used prompts at the top |
 | 🏷️ **Multi-tag Support** | Bulk input with comma, space, or tab |
 | 🎯 **Drag & Drop** | Easily reorder with mouse |
+| 🔖 **Tag/Category Filter** | Click to filter, click again to deselect |
+| 📊 **Sort Order Selection (7 modes)** | Custom / Updated / Created / Name (asc/desc) |
 | 📋 **One-click Copy** | Instantly paste into AI chat |
 | 🌐 **Multi-language** | English / Japanese toggle |
 | 🌙 **Dark / Light Mode** | Syncs with OS (manual override available) |

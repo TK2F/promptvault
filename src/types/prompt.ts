@@ -18,12 +18,22 @@ export interface Prompt {
 /**
  * アプリケーション設定
  */
+export type SortMode =
+    | 'custom'
+    | 'updatedAt-desc'
+    | 'updatedAt-asc'
+    | 'createdAt-desc'
+    | 'createdAt-asc'
+    | 'name-asc'
+    | 'name-desc';
+
 export interface Settings {
     theme: 'light' | 'dark' | 'system';
     fontSize: 'small' | 'medium' | 'large';
     language: 'ja' | 'en';
     caseSensitiveSearch: boolean;
     blankLineMode: 'keep-one' | 'remove-all';  // 空行処理モード
+    sortMode: SortMode;  // 並び替え順
 }
 
 /**
@@ -54,6 +64,7 @@ export const DEFAULT_SETTINGS: Settings = {
     language: 'ja',
     caseSensitiveSearch: false,
     blankLineMode: 'keep-one',
+    sortMode: 'custom',
 };
 
 /**

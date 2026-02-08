@@ -17,7 +17,7 @@ import { ExportDialog } from "@/components/ExportDialog";
 import { getStorageUsage, clearAllData } from "@/lib/storage";
 import { getTranslation } from "@/lib/i18n";
 import { useToast } from "@/hooks/use-toast";
-import type { StorageData, Prompt } from "@/types/prompt";
+import type { StorageData, Prompt, SortMode } from "@/types/prompt";
 import { validateData } from "@/lib/storage";
 import { generateId, now } from "@/lib/utils";
 
@@ -139,7 +139,21 @@ export function Settings() {
                 if (validateData(data)) {
                     importedPrompts = (data as StorageData).prompts;
                 } else if (Array.isArray(data)) {
-                    importedPrompts = data as Prompt[];
+                    // 配列の各要素がPrompt形式かを検証
+                    const validPrompts = data.filter((item: unknown) => {
+                        if (!item || typeof item !== 'object') return false;
+                        const p = item as Record<string, unknown>;
+                        return typeof p.name === 'string' && typeof p.content === 'string';
+                    }) as Prompt[];
+
+                    if (validPrompts.length === 0) {
+                        toast({
+                            title: t.importInvalid,
+                            variant: "destructive",
+                        });
+                        return;
+                    }
+                    importedPrompts = validPrompts;
                 } else {
                     toast({
                         title: t.importInvalid,
@@ -331,6 +345,40 @@ export function Settings() {
                                     </TabsTrigger>
                                 </TabsList>
                             </Tabs>
+                        </div>
+
+                        {/* Sort Mode */}
+                        <div>
+                            <label className="text-sm font-medium mb-2 block">{t.sortMode}</label>
+                            <div className="grid grid-cols-1 gap-1">
+                                {[
+                                    { value: 'custom', label: t.sortModeCustom },
+                                    { value: 'updatedAt-desc', label: t.sortModeUpdatedAtDesc },
+                                    { value: 'updatedAt-asc', label: t.sortModeUpdatedAtAsc },
+                                    { value: 'createdAt-desc', label: t.sortModeCreatedAtDesc },
+                                    { value: 'createdAt-asc', label: t.sortModeCreatedAtAsc },
+                                    { value: 'name-asc', label: t.sortModeNameAsc },
+                                    { value: 'name-desc', label: t.sortModeNameDesc },
+                                ].map((mode) => (
+                                    <button
+                                        key={mode.value}
+                                        onClick={() => updateSettings({ sortMode: mode.value as SortMode })}
+                                        className={`
+                                            w-full flex items-center gap-2 px-3 py-2 text-sm rounded-md
+                                            transition-colors text-left
+                                            ${settings.sortMode === mode.value
+                                                ? "bg-primary text-primary-foreground"
+                                                : "bg-secondary hover:bg-secondary/80"
+                                            }
+                                        `}
+                                    >
+                                        <span className="flex-1">{mode.label}</span>
+                                        {settings.sortMode === mode.value && (
+                                            <span>✓</span>
+                                        )}
+                                    </button>
+                                ))}
+                            </div>
                         </div>
 
                         {/* Storage Info */}

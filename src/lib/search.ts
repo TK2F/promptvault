@@ -138,6 +138,13 @@ export function sortByName(prompts: Prompt[]): Prompt[] {
 }
 
 /**
+ * プロンプトを作成日時で降順ソート
+ */
+export function sortByCreatedAt(prompts: Prompt[]): Prompt[] {
+    return [...prompts].sort((a, b) => b.createdAt - a.createdAt);
+}
+
+/**
  * 統計情報を取得
  */
 export function getPromptStats(prompts: Prompt[]): {

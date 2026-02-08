@@ -1,8 +1,8 @@
 import { create } from 'zustand';
-import type { Prompt, Settings } from '@/types/prompt';
+import type { Prompt, Settings, SortMode } from '@/types/prompt';
 import { DEFAULT_SETTINGS } from '@/types/prompt';
 import { saveData, loadData } from '@/lib/storage';
-import { searchPrompts, sortByUpdatedAt, clearSearchCache } from '@/lib/search';
+import { searchPrompts, sortBySortOrder, sortByUpdatedAt, sortByCreatedAt, sortByName, clearSearchCache } from '@/lib/search';
 import { generateId, now, parseTags } from '@/lib/utils';
 
 interface PromptStore {
@@ -115,7 +115,25 @@ export const usePromptStore = create<PromptStore>((set, get) => ({
 
         // ピン留め以外をフィルタ
         const nonPinned = filtered.filter((p) => !pinnedPromptIds.includes(p.id));
-        return sortByUpdatedAt(nonPinned);
+
+        // 設定に応じたソート
+        switch (settings.sortMode) {
+            case 'updatedAt-desc':
+                return sortByUpdatedAt(nonPinned);
+            case 'updatedAt-asc':
+                return sortByUpdatedAt(nonPinned).reverse();
+            case 'createdAt-desc':
+                return sortByCreatedAt(nonPinned);
+            case 'createdAt-asc':
+                return sortByCreatedAt(nonPinned).reverse();
+            case 'name-asc':
+                return sortByName(nonPinned);
+            case 'name-desc':
+                return sortByName(nonPinned).reverse();
+            case 'custom':
+            default:
+                return sortBySortOrder(nonPinned);
+        }
     },
 
     // ピン留めされたプロンプト（フィルター適用）
@@ -168,11 +186,24 @@ export const usePromptStore = create<PromptStore>((set, get) => ({
     initialize: async () => {
         try {
             const data = await loadData();
+            // 既存設定と新しいデフォルト設定をマージ（後方互換性）
+            const mergedSettings = { ...DEFAULT_SETTINGS, ...data.settings };
+
+            // 古いsortModeから新しいsortModeへマイグレーション
+            const oldToNew: Record<string, SortMode> = {
+                'updatedAt': 'updatedAt-desc',
+                'createdAt': 'createdAt-desc',
+                'name': 'name-asc',
+            };
+            if (mergedSettings.sortMode && oldToNew[mergedSettings.sortMode]) {
+                mergedSettings.sortMode = oldToNew[mergedSettings.sortMode];
+            }
+
             set({
                 prompts: data.prompts,
                 recentPromptIds: data.recentPromptIds,
                 pinnedPromptIds: data.pinnedPromptIds || [],
-                settings: data.settings,
+                settings: mergedSettings,
                 isLoading: false,
                 isReadOnly: false,
             });
@@ -314,27 +345,44 @@ export const usePromptStore = create<PromptStore>((set, get) => ({
     },
 
     // Reorder prompts (drag and drop)
+    // ドラッグ&ドロップで並び替え - 表示順序を反映
     reorderPrompts: async (activeId, overId) => {
-        const { prompts, recentPromptIds, pinnedPromptIds, settings, isReadOnly } = get();
+        const state = get();
+        const { prompts, recentPromptIds, pinnedPromptIds, settings, isReadOnly } = state;
 
         if (isReadOnly) {
             throw new Error('Read-only mode: Cannot reorder prompts');
         }
 
-        const oldIndex = prompts.findIndex((p) => p.id === activeId);
-        const newIndex = prompts.findIndex((p) => p.id === overId);
+        // 表示中のリスト（フィルタ適用済み）を取得
+        const displayedPrompts = state.filteredPrompts();
 
-        if (oldIndex === -1 || newIndex === -1) return;
+        const oldIndex = displayedPrompts.findIndex((p) => p.id === activeId);
+        const newIndex = displayedPrompts.findIndex((p) => p.id === overId);
 
-        const newPrompts = [...prompts];
-        const [removed] = newPrompts.splice(oldIndex, 1);
-        newPrompts.splice(newIndex, 0, removed);
+        if (oldIndex === -1 || newIndex === -1 || oldIndex === newIndex) return;
 
-        // sortOrderを更新
-        const updatedPrompts = newPrompts.map((p, index) => ({
-            ...p,
-            sortOrder: index,
-        }));
+        // 表示中リストで順序を入れ替え
+        const reorderedDisplay = [...displayedPrompts];
+        const [removed] = reorderedDisplay.splice(oldIndex, 1);
+        reorderedDisplay.splice(newIndex, 0, removed);
+
+        // 表示中リストの新しい順序に基づいてsortOrderを更新
+        // 表示順で0, 1, 2... と番号を振り直す
+        const displayIdToNewOrder = new Map<string, number>();
+        reorderedDisplay.forEach((p, index) => {
+            displayIdToNewOrder.set(p.id, index);
+        });
+
+        // 全プロンプトを更新（表示中のもののみsortOrderを更新）
+        const updatedPrompts = prompts.map((p) => {
+            const newOrder = displayIdToNewOrder.get(p.id);
+            if (newOrder !== undefined) {
+                return { ...p, sortOrder: newOrder };
+            }
+            // 表示されていないプロンプト（フィルタで除外されたもの）のsortOrderはそのまま
+            return p;
+        });
 
         set({ prompts: updatedPrompts });
 
@@ -401,23 +449,42 @@ export const usePromptStore = create<PromptStore>((set, get) => ({
         }
 
         const timestamp = now();
-        const newPrompts: Prompt[] = promptsToImport.map((p) => ({
-            id: generateId(),
-            name: p.name || 'Untitled',
-            content: p.content || '',
-            category: p.category,
-            tags: p.tags ? parseTags(p.tags.join(',')) : undefined,
-            createdAt: timestamp,
-            updatedAt: timestamp,
-        }));
+        const existingIds = new Set(prompts.map((p) => p.id));
+
+        const newPrompts: Prompt[] = promptsToImport.map((p) => {
+            // 既存IDと重複する場合は新規ID採番、そうでなければ元のIDを保持
+            const id = p.id && !existingIds.has(p.id) ? p.id : generateId();
+            existingIds.add(id);  // 重複チェック用に追加
+
+            return {
+                id,
+                name: p.name || 'Untitled',
+                content: p.content || '',
+                category: p.category,
+                tags: p.tags ? (Array.isArray(p.tags) ? p.tags : parseTags(String(p.tags))) : undefined,
+                isPinned: p.isPinned ?? false,
+                sortOrder: p.sortOrder,
+                createdAt: p.createdAt && typeof p.createdAt === 'number' ? p.createdAt : timestamp,
+                updatedAt: p.updatedAt && typeof p.updatedAt === 'number' ? p.updatedAt : timestamp,
+            };
+        });
+
+        // インポートしたピン留めプロンプトのIDを追加
+        const importedPinnedIds = newPrompts
+            .filter((p) => p.isPinned)
+            .map((p) => p.id);
+        const mergedPinnedIds = [...new Set([...pinnedPromptIds, ...importedPinnedIds])];
 
         const allPrompts = [...newPrompts, ...prompts];
-        set({ prompts: allPrompts });
+        set({
+            prompts: allPrompts,
+            pinnedPromptIds: mergedPinnedIds,
+        });
 
         await saveData({
             prompts: allPrompts,
             recentPromptIds,
-            pinnedPromptIds,
+            pinnedPromptIds: mergedPinnedIds,
             settings,
             version: 1,
         });
