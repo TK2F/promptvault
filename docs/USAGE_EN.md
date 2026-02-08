@@ -214,7 +214,7 @@ To delete all data:
 
 ## Tips
 
-- **Recently Used**: Shows last 5 copied prompts
+- **Recently Used**: Shows recently copied prompts
 - **Tag Input**: Press Enter, Tab, or comma to confirm
 - **Markdown**: Prompt content renders as Markdown
-- **Performance**: Handles up to 10,000 prompts smoothly (lazy loading)
+- **Performance**: High performance even with numerous prompts

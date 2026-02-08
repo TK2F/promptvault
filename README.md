@@ -8,9 +8,9 @@
   <strong>🇺🇸 English</strong> | <a href="README_JA.md">🇯🇵 日本語</a>
 </p>
 
-> Chrome Extension for Managing AI Prompts – Built for Power Users
+> Chrome Extension for Managing AI Prompts
 
-A Chrome extension for ChatGPT / Gemini / Claude users to "instantly search, reuse, and edit" large collections of long prompts (up to 10,000).
+A Chrome extension for ChatGPT / Gemini / Claude users to "search, reuse, and edit" collections of prompts.
 
 ---
 
@@ -79,9 +79,9 @@ npm run build
 
 | Spec | Value |
 |------|-------|
-| **Max Prompts** | 10,000 |
-| **Search** | Cached real-time search |
-| **Rendering** | Lazy loading (50 items per batch) |
+| **Management** | Manage numerous prompts |
+| **Search** | Real-time search |
+| **Rendering** | Lazy loading |
 | **Storage** | chrome.storage.local (5MB) |
 
 ---
